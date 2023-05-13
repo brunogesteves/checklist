@@ -1,0 +1,135 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
+
+import { GET_ALL_EVENTS, GET_ALL_GUESTS } from '../GraphQl/Queries';
+import { ItemCompanyProps, ListItemsProps } from '../../../@types';
+import { InfoContext } from '../Contexts/infoContext';
+
+export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [timeNow, setTimeNow] = useState<string>('');
+  const [selectedEvent, setSelectedEvent] = useState('');
+  const [allEvents, setAllEvents] = useState<string[]>([]);
+  const [completeList, setCompleteList] = useState<ListItemsProps[]>([]);
+  const [filteredList, setFilteredList] = useState<ListItemsProps[]>([]);
+  const [allCompanies, setAllCompanies] = useState<ItemCompanyProps[]>([]);
+  const [searchGuest, setSearchGuest] = useState('');
+  const [totalGuests, setTotalGuests] = useState<number>(0);
+
+  const { data: dataEvents } = useQuery(GET_ALL_EVENTS);
+  const { data: dataGuests } = useQuery(GET_ALL_GUESTS);
+
+  setInterval(() => {
+    const date = new Date();
+    const dateFormat = new Intl.DateTimeFormat('pt-BR', {
+      year: '2-digit',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false,
+    });
+
+    setTimeNow(dateFormat.format(date));
+  }, 1000);
+
+  useEffect(() => {
+    const temporaryList: any[] = [];
+
+    dataEvents?.getEvents.forEach((event) => {
+      temporaryList.push(event.name);
+    });
+
+    setAllEvents(temporaryList);
+  }, [dataEvents]);
+
+  useEffect(() => {
+    const temporaryList: any[] = dataGuests?.getGuests.map((data) => {
+      return {
+        ...data,
+        event: 'N/A',
+        check: 'N/A',
+        time: 'N/A',
+      };
+    });
+
+    const temporaryCompaniesList: string[] = [];
+    for (let i = 0; i < temporaryList?.length; i++) {
+      if (
+        temporaryCompaniesList?.indexOf(temporaryList[i].companyName) === -1
+      ) {
+        temporaryCompaniesList?.push(temporaryList[i].companyName);
+      }
+    }
+
+    setAllCompanies(
+      temporaryCompaniesList.map((data) => {
+        return {
+          companyName: data,
+          checkedInGuest: 0,
+        };
+      })
+    );
+
+    const temporaryEventsList: any[] = [];
+    let index = 0;
+    temporaryList?.forEach((guest: any, i) => {
+      dataEvents?.getEvents.forEach(
+        (event: { invitationId: string; name: string }) => {
+          if (guest.invitationId === event.invitationId) {
+            temporaryList[i].event = event.name;
+            index += 1;
+          }
+        }
+      );
+      setCompleteList(temporaryEventsList);
+    });
+
+    setCompleteList(temporaryList);
+  }, [dataGuests]);
+
+  useEffect(() => {
+    if (selectedEvent === '') {
+      setFilteredList([]);
+    } else {
+      const filteredGuest = completeList.filter(
+        (guests) => guests.event === selectedEvent
+      );
+      setFilteredList(filteredGuest);
+    }
+  }, [selectedEvent]);
+
+  return (
+    <InfoContext.Provider
+      value={{
+        timeNow,
+        setTimeNow,
+        allEvents,
+        setAllEvents,
+        selectedEvent,
+        setSelectedEvent,
+        completeList,
+        setCompleteList,
+        allCompanies,
+        setAllCompanies,
+        filteredList,
+        setFilteredList,
+        searchGuest,
+        setSearchGuest,
+        totalGuests,
+        setTotalGuests,
+      }}
+    >
+      {children}
+    </InfoContext.Provider>
+  );
+};
+
+export default InfoProvider;
+
+export function useInfo() {
+  const useInfo = useContext(InfoContext);
+  return useInfo;
+}
