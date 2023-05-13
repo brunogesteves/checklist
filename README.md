@@ -1,5 +1,5 @@
 <h1 align="center">Hi 👋, I'm Bruno Esteves</h1>
-<h3 align="center">A Junior Frontend developer from Brazil</h3>
+<h3 align="center">A Junior Frontend Developer from Brazil</h3>
 
 Project: It is a project about a checklist for simultaneously events. The Host can note every guest check-In or Check-Out. It is possible to filter by event and/or an individual guest. The frontend is all made using Reactjs with Hooks, such as ContextApi, Typescript and styling with tailwindCss. The backend is using Apollo Graphql and Typescript.
 
