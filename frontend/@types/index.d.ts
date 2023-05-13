@@ -5,7 +5,7 @@ export interface ItemCompanyProps {
 
 export interface ListEventsProps {
   name: string;
-  invitationId: number;
+  invitationId: string;
 }
 
 export interface ListItemsProps {

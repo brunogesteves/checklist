@@ -6831,12 +6831,10 @@ async function main() {
   console.log(`guests added.`);
 
   for (const event of EVENTS_DATA) {
-    const eventIdentificationRandom =
-      events[Math.floor(Math.random() * events.length)];
     await prisma.event.create({
       data: {
         name: event.name,
-        invitationId: eventIdentificationRandom,
+        invitationId: event.eventId,
       },
     });
   }

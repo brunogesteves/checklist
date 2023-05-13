@@ -82,15 +82,13 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
       })
     );
 
-    let id = 0;
-    temporaryList?.forEach((guest: any) => {
-      allEvents?.forEach((event) => {
-        if (guest.invitationId === event.invitationId) {
-          temporaryList[id].event = event.name;
-          id++;
+    for (let i = 0; i < temporaryList?.length; i++) {
+      for (let j = 0; j < allEvents?.length; j++) {
+        if (temporaryList[i].invitationId === allEvents[j].invitationId) {
+          temporaryList[i].event = allEvents[j].name;
         }
-      });
-    });
+      }
+    }
 
     setCompleteList(temporaryList);
   }, [dataGuests]);
