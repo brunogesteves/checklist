@@ -2,7 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 
 import { GET_ALL_EVENTS, GET_ALL_GUESTS } from '../GraphQl/Queries';
-import { ItemCompanyProps, ListItemsProps } from '../../@types';
+import {
+  ItemCompanyProps,
+  ListEventsProps,
+  ListItemsProps,
+} from '../../@types';
 import { InfoContext } from '../Contexts/infoContext';
 
 export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -10,7 +14,7 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [timeNow, setTimeNow] = useState<string>('');
   const [selectedEvent, setSelectedEvent] = useState('');
-  const [allEvents, setAllEvents] = useState<string[]>([]);
+  const [allEvents, setAllEvents] = useState<ListEventsProps[]>([]);
   const [completeList, setCompleteList] = useState<ListItemsProps[]>([]);
   const [filteredList, setFilteredList] = useState<ListItemsProps[]>([]);
   const [allCompanies, setAllCompanies] = useState<ItemCompanyProps[]>([]);
@@ -38,22 +42,27 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const temporaryList: any[] = [];
 
-    dataEvents?.getEvents.forEach((event) => {
-      temporaryList.push(event.name);
+    dataEvents?.getEvents.forEach((event: ListEventsProps) => {
+      temporaryList.push({
+        name: event.name,
+        invitationId: event.invitationId,
+      });
     });
 
     setAllEvents(temporaryList);
   }, [dataEvents]);
 
   useEffect(() => {
-    const temporaryList: any[] = dataGuests?.getGuests.map((data) => {
-      return {
-        ...data,
-        event: 'N/A',
-        check: 'N/A',
-        time: 'N/A',
-      };
-    });
+    const temporaryList: ListItemsProps[] = dataGuests?.getGuests.map(
+      (data) => {
+        return {
+          ...data,
+          event: 'N/A',
+          check: 'N/A',
+          time: 'N/A',
+        };
+      }
+    );
 
     const temporaryCompaniesList: string[] = [];
     for (let i = 0; i < temporaryList?.length; i++) {
@@ -73,16 +82,14 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
       })
     );
 
-    const temporaryEventsList: any[] = [];
-    temporaryList?.forEach((guest: any, i) => {
-      dataEvents?.getEvents.forEach(
-        (event: { invitationId: string; name: string }) => {
-          if (guest.invitationId === event.invitationId) {
-            temporaryList[i].event = event.name;
-          }
+    let id = 0;
+    temporaryList?.forEach((guest: any) => {
+      allEvents?.forEach((event) => {
+        if (guest.invitationId === event.invitationId) {
+          temporaryList[id].event = event.name;
+          id++;
         }
-      );
-      setCompleteList(temporaryEventsList);
+      });
     });
 
     setCompleteList(temporaryList);

@@ -3,6 +3,11 @@ export interface ItemCompanyProps {
   checkedInGuest: number;
 }
 
+export interface ListEventsProps {
+  name: string;
+  invitationId: number;
+}
+
 export interface ListItemsProps {
   check: string;
   companyName: string;

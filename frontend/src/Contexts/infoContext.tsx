@@ -1,27 +1,16 @@
 import { createContext } from 'react';
 
-interface ItemCompanyProps {
-  companyName: string;
-  checkedInGuest: number;
-}
-
-interface ListItemsProps {
-  check: string;
-  companyName: string;
-  event: string;
-  firstName: string;
-  invitationId: string;
-  lastName: string;
-  role: string;
-  time: string;
-  id: number;
-}
+import {
+  ItemCompanyProps,
+  ListItemsProps,
+  ListEventsProps,
+} from '../../@types';
 
 interface InfoProps {
   timeNow: string;
   setTimeNow: (c: string) => void;
-  allEvents: string[];
-  setAllEvents: (c: string[]) => void;
+  allEvents: ListEventsProps[];
+  setAllEvents: (c: ListEventsProps[]) => void;
   selectedEvent: string;
   setSelectedEvent: (c: string) => void;
   completeList: ListItemsProps[];

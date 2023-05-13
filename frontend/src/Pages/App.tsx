@@ -4,15 +4,8 @@ import { GuestList } from '../Components/GuestList/GuestList.view';
 import { useInfo } from '../Contexts/context';
 
 export const App = () => {
-  const {
-    // completeList,
-    // allEvents,
-    selectedEvent,
-    timeNow,
-    allEvents,
-    totalGuests,
-    setSelectedEvent,
-  } = useInfo();
+  const { selectedEvent, timeNow, allEvents, totalGuests, setSelectedEvent } =
+    useInfo();
 
   return (
     <div className="bg-[#353ca6] h-auto pt-10 text-center">
@@ -24,8 +17,12 @@ export const App = () => {
           Select an event
         </option>
         {allEvents?.map((event, i: number) => (
-          <option className="text-white bg-[#23286c]  " value={event} key={i}>
-            {event}
+          <option
+            className="text-white bg-[#23286c]  "
+            value={event.name}
+            key={i}
+          >
+            {event.name}
           </option>
         ))}
       </select>

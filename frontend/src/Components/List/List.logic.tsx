@@ -27,20 +27,19 @@ export const useLogic = () => {
   const [oldFilteredList, setOldFilteredList] = useState(completeList);
 
   const columns: TableColumn<ListItemsProps>[] = [
-    // {
-    //   name: 'FirstName',
-    //   selector: (row) =>
-    //     row.firstName[0].toUpperCase() + row.firstName.slice(1),
-    //   sortable: true,
-    //   width: '120px',
-    // },
-    // {
-    //   name: 'Lastname',
-    //   selector: (row) => row.lastName[0].toUpperCase() + row.lastName.slice(1),
-    //   sortable: true,
-    //   width: '120px',
-    // },
-
+    {
+      name: 'FirstName',
+      selector: (row) =>
+        row.firstName[0].toUpperCase() + row.firstName.slice(1),
+      sortable: true,
+      width: '120px',
+    },
+    {
+      name: 'Lastname',
+      selector: (row) => row.lastName[0].toUpperCase() + row.lastName.slice(1),
+      sortable: true,
+      width: '120px',
+    },
     {
       name: 'Company Name',
       selector: (row) =>

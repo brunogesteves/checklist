@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useInfo } from '../../Contexts/context';
 
 export const useLogic = () => {
-  const { completeList, selectedEvent, setTotalGuests } = useInfo();
+  const { completeList, selectedEvent, setTotalGuests, setFilteredList } =
+    useInfo();
   const [absentGuestsNumber, setAbsentGuestsNumber] = useState(0);
   const [arrivedGuestsNumber, setArrivedGuestsNumber] = useState(0);
 
