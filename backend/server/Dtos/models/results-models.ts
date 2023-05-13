@@ -1,34 +1,34 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, InterfaceType, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class EventsResults {
-  @Field()
+  @Field(() => String)
   name!: string;
 
-  @Field()
+  @Field(() => Number)
   id!: number;
 
-  @Field()
+  @Field(() => String)
   invitationId!: string;
 }
 
 @ObjectType()
 export class GuestResults {
-  @Field()
+  @Field(() => String)
   firstName!: string;
 
-  @Field()
+  @Field(() => String)
   lastName!: string;
 
-  @Field()
+  @Field(() => String)
   role?: string;
 
-  @Field()
+  @Field(() => String)
   companyName!: string;
 
-  @Field()
+  @Field(() => String)
   invitationId!: string;
 
-  @Field()
+  @Field(() => Number)
   id!: number;
 }

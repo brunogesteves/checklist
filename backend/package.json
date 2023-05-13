@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --exit-child server/index.ts"
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --exit-child server/index.ts",
+    "build": "tsup server",
+    "start": "node dist/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
+    "tsup": "^6.7.0",
     "type-graphql": "^1.1.1",
     "typescript": "^5.0.4"
   },
