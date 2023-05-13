@@ -18,7 +18,6 @@ interface ListItemsProps {
 export const useLogic = () => {
   const {
     completeList,
-    setCompleteList,
     filteredList,
     setFilteredList,
     searchGuest,
@@ -201,7 +200,7 @@ export const useLogic = () => {
     completeList?.forEach((guest) => {
       if (guest.check === 'Check-In') {
         allCompanies.forEach((company) => {
-          if (company.companyName == guest.companyName) {
+          if (company.companyName === guest.companyName) {
             company.checkedInGuest += 1;
           }
         });

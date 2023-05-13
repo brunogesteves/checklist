@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 
 import { GET_ALL_EVENTS, GET_ALL_GUESTS } from '../GraphQl/Queries';
-import { ItemCompanyProps, ListItemsProps } from '../../../@types';
+import { ItemCompanyProps, ListItemsProps } from '../../@types';
 import { InfoContext } from '../Contexts/infoContext';
 
 export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -74,13 +74,11 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
     );
 
     const temporaryEventsList: any[] = [];
-    let index = 0;
     temporaryList?.forEach((guest: any, i) => {
       dataEvents?.getEvents.forEach(
         (event: { invitationId: string; name: string }) => {
           if (guest.invitationId === event.invitationId) {
             temporaryList[i].event = event.name;
-            index += 1;
           }
         }
       );

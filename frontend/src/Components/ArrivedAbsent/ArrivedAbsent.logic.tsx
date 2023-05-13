@@ -10,11 +10,11 @@ export const useLogic = () => {
     let absentTemporaryNumber = 0;
     let ArrivedTemporaryNumber = 0;
 
-    if (selectedEvent == '') {
+    if (selectedEvent === '') {
       completeList?.forEach((guest) => {
-        if (guest.check == 'N/A' || guest.check == 'Check-Out') {
+        if (guest.check === 'N/A' || guest.check === 'Check-Out') {
           absentTemporaryNumber += 1;
-        } else if (guest.check == 'Check-In') {
+        } else if (guest.check === 'Check-In') {
           ArrivedTemporaryNumber += 1;
         }
       });
@@ -23,10 +23,10 @@ export const useLogic = () => {
       setTotalGuests(absentTemporaryNumber + ArrivedTemporaryNumber);
     } else {
       completeList.forEach((guest) => {
-        if (guest.event == selectedEvent) {
-          if (guest.check == 'N/A' || guest.check == 'Check-Out') {
+        if (guest.event === selectedEvent) {
+          if (guest.check === 'N/A' || guest.check === 'Check-Out') {
             absentTemporaryNumber += 1;
-          } else if (guest.check == 'Check-In') {
+          } else if (guest.check === 'Check-In') {
             ArrivedTemporaryNumber += 1;
           }
         }

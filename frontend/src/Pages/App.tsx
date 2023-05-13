@@ -1,7 +1,7 @@
 import React from 'react';
-import { ArrivedAbsent } from './Components/ArrivedAbsent/ArrivedAbsent.view';
-import { GuestList } from './Components/GuestList/GuestList.view';
-import { useInfo } from './Contexts/context';
+import { ArrivedAbsent } from '../Components/ArrivedAbsent/ArrivedAbsent.view';
+import { GuestList } from '../Components/GuestList/GuestList.view';
+import { useInfo } from '../Contexts/context';
 
 export const App = () => {
   const {
@@ -35,6 +35,7 @@ export const App = () => {
       <div className="relative h-auto bg-black ">
         <img
           src="./party.jpg"
+          alt="party"
           className="w-full object-cover h-72 opacity-25"
         />
         <span className="absolute bottom-10 left-10 text-white font-bold text-5xl">

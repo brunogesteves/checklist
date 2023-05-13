@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useInfo } from '../../Contexts/context';
 import { useLogic } from './ArrivedAbsent.logic';
-
-interface PP {
-  checkedInGuest: number;
-  companyName: string;
-}
 
 export const ArrivedAbsent = () => {
   const { data } = useLogic();
