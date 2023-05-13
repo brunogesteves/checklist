@@ -1,4 +1,4 @@
-import { Field, InterfaceType, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export class EventsResults {
