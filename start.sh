@@ -1,7 +1,7 @@
 kill -9 $(lsof -t -i:3000)
 kill -9 $(lsof -t -i:4000)
 kill -9 $(lsof -t -i:3333)
-kill -9 $(lsof -t -i:3306)
+fuser -k 3306/tcp
 kill -9 $(lsof -t -i:3001)
 cd backend
 cd server
