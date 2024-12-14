@@ -1,109 +1,80 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useContext, useEffect, useState } from "react";
 
-import { GET_ALL_EVENTS, GET_ALL_GUESTS } from '../GraphQl/Queries';
-import {
-  ItemCompanyProps,
-  ListEventsProps,
-  ListItemsProps,
-} from '../../@types';
-import { InfoContext } from '../Contexts/infoContext';
+import { ListEventsProps, ListGuestProps } from "../../@types";
+import { InfoContext } from "../Contexts/infoContext";
+import { api } from "../utils/api.ts";
 
 export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [timeNow, setTimeNow] = useState<string>('');
-  const [selectedEvent, setSelectedEvent] = useState('');
+  const [timeNow, setTimeNow] = useState<string>("");
   const [allEvents, setAllEvents] = useState<ListEventsProps[]>([]);
-  const [completeList, setCompleteList] = useState<ListItemsProps[]>([]);
-  const [filteredList, setFilteredList] = useState<ListItemsProps[]>([]);
-  const [allCompanies, setAllCompanies] = useState<ItemCompanyProps[]>([]);
-  const [searchGuest, setSearchGuest] = useState('');
+  const [guests, setGuests] = useState<ListGuestProps[]>([]);
+  const [perPage, setPerPage] = useState<number>(5);
+  const [skip, setSkip] = useState<number>(0);
+  const [search, setSearch] = useState<string>("");
+  const [searchByEvent, setSearchByEvent] = useState<string>("");
   const [totalGuests, setTotalGuests] = useState<number>(0);
+  const [hasArrivedGuestNumber, setHasArrivedGuestNumber] = useState<number>(0);
+  const dateFormat = new Intl.DateTimeFormat("pt-BR", {
+    year: "2-digit",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+  });
 
-  const { data: dataEvents } = useQuery(GET_ALL_EVENTS);
-  const { data: dataGuests } = useQuery(GET_ALL_GUESTS);
+  function guestChecked(id: number) {
+    console.log("guest check");
+    console.log(guests[4].check);
 
-  setInterval(() => {
-    const date = new Date();
-    const dateFormat = new Intl.DateTimeFormat('pt-BR', {
-      year: '2-digit',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: false,
+    const time = timeNow;
+    let tempGuests = guests;
+
+    api.put("/guests/check", { time, id }).then((res) => {
+      if (res.data) {
+        tempGuests.forEach((guest, i) => {
+          if (guest.id === id) {
+            tempGuests[i].check = res.data.data.check;
+          }
+        });
+      }
     });
-
-    setTimeNow(dateFormat.format(date));
-  }, 1000);
+    console.log(tempGuests[4].check);
+    setGuests(tempGuests);
+    console.log(guests[4].check);
+  }
 
   useEffect(() => {
-    const temporaryList: any[] = [];
+    if (skip === 0) setSkip(0);
+    if (skip > totalGuests) setSkip(totalGuests);
+    setInterval(() => {
+      setTimeNow(dateFormat.format(new Date()));
+    }, 1000);
 
-    dataEvents?.getEvents.forEach((event: ListEventsProps) => {
-      temporaryList.push({
-        name: event.name,
-        invitationId: event.invitationId,
+    api.get("/events").then((res) => setAllEvents(res.data.getEvents));
+
+    api
+      .get("/guests", { params: { perPage, skip, search, searchByEvent } })
+      .then((res) => {
+        setGuests(res?.data?.guests);
+        setTotalGuests(res.data.totalGuests);
       });
+  }, [perPage, skip, search, searchByEvent]);
+
+  useEffect(() => {
+    console.log("guest reload");
+    // console.log(guests);
+    let tempArrived = 0;
+    guests.forEach((guest) => {
+      if (guest.check === true) {
+        tempArrived += 1;
+      }
     });
-
-    setAllEvents(temporaryList);
-  }, [dataEvents]);
-
-  useEffect(() => {
-    const temporaryList: ListItemsProps[] = dataGuests?.getGuests.map(
-      (data) => {
-        return {
-          ...data,
-          event: 'N/A',
-          check: 'N/A',
-          time: 'N/A',
-        };
-      }
-    );
-
-    const temporaryCompaniesList: string[] = [];
-    for (let i = 0; i < temporaryList?.length; i++) {
-      if (
-        temporaryCompaniesList?.indexOf(temporaryList[i].companyName) === -1
-      ) {
-        temporaryCompaniesList?.push(temporaryList[i].companyName);
-      }
-    }
-
-    setAllCompanies(
-      temporaryCompaniesList.map((data) => {
-        return {
-          companyName: data,
-          checkedInGuest: 0,
-        };
-      })
-    );
-
-    for (let i = 0; i < temporaryList?.length; i++) {
-      for (let j = 0; j < allEvents?.length; j++) {
-        if (temporaryList[i].invitationId === allEvents[j].invitationId) {
-          temporaryList[i].event = allEvents[j].name;
-        }
-      }
-    }
-
-    setCompleteList(temporaryList);
-  }, [dataGuests]);
-
-  useEffect(() => {
-    if (selectedEvent === '') {
-      setFilteredList([]);
-    } else {
-      const filteredGuest = completeList.filter(
-        (guests) => guests.event === selectedEvent
-      );
-      setFilteredList(filteredGuest);
-    }
-  }, [selectedEvent]);
-
+    setHasArrivedGuestNumber(tempArrived);
+  }, [guests]);
   return (
     <InfoContext.Provider
       value={{
@@ -111,18 +82,20 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
         setTimeNow,
         allEvents,
         setAllEvents,
-        selectedEvent,
-        setSelectedEvent,
-        completeList,
-        setCompleteList,
-        allCompanies,
-        setAllCompanies,
-        filteredList,
-        setFilteredList,
-        searchGuest,
-        setSearchGuest,
+        search,
+        setSearch,
         totalGuests,
-        setTotalGuests,
+        guests,
+        setGuests,
+        perPage,
+        setPerPage,
+        skip,
+        setSkip,
+        searchByEvent,
+        setSearchByEvent,
+        guestChecked,
+        hasArrivedGuestNumber,
+        setHasArrivedGuestNumber,
       }}
     >
       {children}

@@ -5,17 +5,16 @@ export interface ItemCompanyProps {
 
 export interface ListEventsProps {
   name: string;
-  invitationId: string;
+  invitationCode: string;
 }
 
-export interface ListItemsProps {
-  check: string;
-  companyName: string;
-  event: string;
+export interface ListGuestProps {
   firstName: string;
-  invitationId: string;
+  id: number;
   lastName: string;
   role: string;
+  companyName: string;
+  check: boolean;
   time: string;
-  id: number;
+  invitation: string;
 }

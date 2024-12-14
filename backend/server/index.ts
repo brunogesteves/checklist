@@ -1,20 +1,16 @@
-import 'reflect-metadata';
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
-import { buildSchema } from 'type-graphql';
-import { GuestListResolver } from './Resolvers/GuestList-Resolver';
+import express from "express";
+import routes from "./routes";
 
-const main = async () => {
-  const schema = await buildSchema({
-    resolvers: [GuestListResolver],
-  });
+import cors from "cors";
 
-  const apolloServer = new ApolloServer({ schema, cache: 'bounded' });
-  const app = express();
-  await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
-  app.listen(4000, () => {
-    console.log(`🚀 Server ready at port 4000`);
-  });
-};
-main();
+const app = express();
+app.use(cors());
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(routes);
+
+app.listen(3001, () => {
+  return console.log(`Server is listening at http://localhost:3001`);
+});

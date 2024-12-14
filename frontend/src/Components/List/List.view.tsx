@@ -1,16 +1,16 @@
-import React from 'react';
-import DataTable from 'react-data-table-component';
-import { useLogic } from './List.logic';
+import React from "react";
+import DataTable from "react-data-table-component";
+import { useLogic } from "./List.logic";
 
 export const List = () => {
   const { data } = useLogic();
 
   return (
     <>
-      {data.finalList ? (
+      {data.allGuests ? (
         <DataTable
           columns={data.columns}
-          data={data.finalList}
+          data={data.allGuests}
           customStyles={data.customStyles}
           pagination
           fixedHeaderScrollHeight="22"

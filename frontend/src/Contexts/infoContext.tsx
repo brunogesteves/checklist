@@ -1,45 +1,49 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 import {
   ItemCompanyProps,
-  ListItemsProps,
+  ListGuestProps,
   ListEventsProps,
-} from '../../@types';
+} from "../../@types";
 
 interface InfoProps {
   timeNow: string;
   setTimeNow: (c: string) => void;
   allEvents: ListEventsProps[];
   setAllEvents: (c: ListEventsProps[]) => void;
-  selectedEvent: string;
-  setSelectedEvent: (c: string) => void;
-  completeList: ListItemsProps[];
-  setCompleteList: (c: ListItemsProps[]) => void;
-  allCompanies: ItemCompanyProps[];
-  setAllCompanies: (c: ItemCompanyProps[]) => void;
-  filteredList: ListItemsProps[];
-  setFilteredList: (c: ListItemsProps[]) => void;
-  searchGuest: string;
-  setSearchGuest: (c: string) => void;
+  search: string;
+  setSearch: (c: string) => void;
   totalGuests: number;
-  setTotalGuests: (c: number) => void;
+  guests: ListGuestProps[];
+  setGuests: (c: ListGuestProps[]) => void;
+  perPage: number;
+  setPerPage: (c: number) => void;
+  skip: number;
+  setSkip: (c: number) => void;
+  searchByEvent: string;
+  setSearchByEvent: (c: string) => void;
+  guestChecked: (id: number) => void;
+  hasArrivedGuestNumber: number;
+  setHasArrivedGuestNumber: (id: number) => void;
 }
 
 export const InfoContext = createContext<InfoProps>({
-  timeNow: '',
+  timeNow: "",
   setTimeNow: () => {},
   allEvents: [],
   setAllEvents: () => {},
-  selectedEvent: '',
-  setSelectedEvent: () => {},
-  completeList: [],
-  setCompleteList: () => {},
-  allCompanies: [],
-  setAllCompanies: () => {},
-  filteredList: [],
-  setFilteredList: () => {},
-  searchGuest: '',
-  setSearchGuest: () => {},
+  search: "",
+  setSearch: () => {},
   totalGuests: 0,
-  setTotalGuests: () => {},
+  guests: [],
+  setGuests: () => {},
+  perPage: 5,
+  setPerPage: () => {},
+  skip: 0,
+  setSkip: () => {},
+  searchByEvent: "",
+  setSearchByEvent: () => {},
+  guestChecked: () => {},
+  hasArrivedGuestNumber: 0,
+  setHasArrivedGuestNumber: () => {},
 });
