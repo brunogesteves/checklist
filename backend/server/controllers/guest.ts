@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 
 export const list = async (req: Request, res: Response): Promise<void> => {
   const { perPage, skip, search, searchByEvent } = req.query;
+  console.log("api list");
   try {
     const [guests, totalGuests] = await GuestsRepository.list(
       Number(perPage),
