@@ -12,7 +12,7 @@ export default function Index() {
   return (
     <>
       <View className="bg-[#353ca6]  pt-5 text-center h-auto">
-        <Text className="text-center text-white text-3xl mb-5 ">
+        <Text className="text-center text-white text-3xl mb-3 pt-4 ">
           CheckList Events
         </Text>
 

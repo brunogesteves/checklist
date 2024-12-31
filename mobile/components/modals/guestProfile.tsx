@@ -55,8 +55,6 @@ export default function InfoGuestMOdal() {
             </Text>
           </View>
         </Modal>
-
-        {/* <Buttons action={() => setModalVisible(true)} text="More Options" /> */}
       </SafeAreaView>
     </SafeAreaProvider>
   );

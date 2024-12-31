@@ -17,4 +17,7 @@ export interface ListGuestProps {
   check: boolean;
   time: string;
   invitation: string;
+  event: {
+    name: string;
+  };
 }

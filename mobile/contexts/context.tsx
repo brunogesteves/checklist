@@ -10,13 +10,14 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
   const [timeNow, setTimeNow] = useState<string>("");
   const [allEvents, setAllEvents] = useState<ListEventsProps[]>([]);
   const [guests, setGuests] = useState<GuestProps[]>([]);
-  const [perPage, setPerPage] = useState<number>(5);
+  const [perPage, setPerPage] = useState<number>(10);
   const [skip, setSkip] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [searchByEvent, setSearchByEvent] = useState<string>("");
   const [totalGuests, setTotalGuests] = useState<number>(0);
   const [hasArrivedGuestNumber, setHasArrivedGuestNumber] = useState<number>(0);
   const [openGuestProfileModal, setOpenGuestProfileModal] = useState(false);
+  const [searchByStatus, setSearchByStatus] = useState<string>("");
   const [infoUniqueGuest, setInfoUniqueGuest] = useState<GuestProps>({
     firstName: "",
     id: 0,
@@ -77,15 +78,17 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
     api.get("/events").then((res) => setAllEvents(res.data.getEvents));
 
     api
-      .get("/guests", { params: { perPage, skip, search, searchByEvent } })
+      .get("/guests", {
+        params: { perPage, skip, search, searchByEvent, searchByStatus },
+      })
       .then((res) => {
         setGuests(res?.data?.guests);
         setTotalGuests(res.data.totalGuests);
       });
-  }, [perPage, skip, search, searchByEvent]);
+  }, [perPage, skip, search, searchByEvent, searchByStatus]);
 
   useEffect(() => {
-    api.get("/", { params: { perPage, skip, search, searchByEvent } });
+    countCheckIn();
   }, []);
 
   useEffect(() => {
@@ -116,6 +119,8 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
         setOpenGuestProfileModal,
         infoUniqueGuest,
         setInfoUniqueGuest,
+        searchByStatus,
+        setSearchByStatus,
       }}
     >
       {children}

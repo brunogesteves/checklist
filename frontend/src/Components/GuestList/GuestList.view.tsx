@@ -11,6 +11,7 @@ export const GuestList = () => {
     setPerPage,
     setSearchByEvent,
     guestChecked,
+    setSearchByStatus,
   } = useInfo();
   return (
     <div>
@@ -42,6 +43,16 @@ export const GuestList = () => {
                 </div>
               </div>
               <div className="flex space-x-3">
+                <div className="flex space-x-3 items-center">
+                  <select
+                    onChange={(e) => setSearchByStatus(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                  >
+                    <option value="">All</option>
+                    <option value="true">Check-In</option>
+                    <option value="false">Check-Out</option>
+                  </select>
+                </div>
                 <div className="flex space-x-3 items-center">
                   <select
                     onChange={(e) => setSearchByEvent(e.target.value)}

@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { TableColumn } from "react-data-table-component";
 
 import { useInfo } from "../../Contexts/context";
 import { ListGuestProps } from "../../../@types";
 
 export const useLogic = () => {
-  const {
-    completeList,
-    filteredList,
-    setFilteredList,
-    searchGuest,
-    selectedEvent,
-    allCompanies,
-    setAllGuests,
-    allGuests,
-    timeNow,
-  } = useInfo();
-
-  const [oldFilteredList, setOldFilteredList] = useState(completeList);
+  const { guests } = useInfo();
 
   const columns: TableColumn<ListGuestProps>[] = [
     {
@@ -173,7 +161,7 @@ export const useLogic = () => {
     // // });
 
     // console.log(tempGuests[0].check);
-    console.log(allGuests[0].check);
+    console.log(guests[0].check);
     // setAllGuests(guests=>[...guests,guests[0].]);
 
     // for (let i = 0; i < allCompanies.length; i++) {
@@ -215,8 +203,7 @@ export const useLogic = () => {
     data: {
       columns,
       customStyles,
-      // finalList,
-      allGuests,
+      guests,
     },
   };
 };

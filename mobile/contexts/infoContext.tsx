@@ -25,6 +25,8 @@ interface InfoProps {
   setOpenGuestProfileModal: (newState: boolean) => void;
   infoUniqueGuest: GuestProps;
   setInfoUniqueGuest: (newState: GuestProps) => void;
+  searchByStatus: string;
+  setSearchByStatus: (newState: string) => void;
 }
 
 export const InfoContext = createContext<InfoProps>({
@@ -37,7 +39,7 @@ export const InfoContext = createContext<InfoProps>({
   totalGuests: 0,
   guests: [],
   setGuests: () => {},
-  perPage: 5,
+  perPage: 10,
   setPerPage: () => {},
   skip: 0,
   setSkip: () => {},
@@ -59,4 +61,6 @@ export const InfoContext = createContext<InfoProps>({
     invitation: "",
   },
   setInfoUniqueGuest: () => {},
+  searchByStatus: "",
+  setSearchByStatus: () => {},
 });

@@ -4,12 +4,11 @@ import { GuestList } from "../Components/GuestList/GuestList.view";
 import { useInfo } from "../Contexts/context";
 
 export const App = () => {
-  const { selectedEvent, timeNow, allEvents, totalGuests, setSelectedEvent } =
-    useInfo();
+  const { timeNow, totalGuests } = useInfo();
 
   return (
-    <div className="bg-[#353ca6] h-screen py-20 text-center">
-      <h1 className="text-center text-white text-2xl mb-7 h-5">
+    <div className="bg-[#353ca6] h-screen text-center">
+      <h1 className="text-center text-white text-2xl py-5 mb-7 h-5">
         CheckList Events
       </h1>
       <div className="relative h-auto bg-black ">
@@ -18,9 +17,7 @@ export const App = () => {
           alt="party"
           className="w-full object-cover h-72 opacity-25"
         />
-        <span className="absolute bottom-10 left-10 text-white font-bold text-5xl">
-          {selectedEvent ? "CheckList : " : ""} {selectedEvent}
-        </span>
+
         <span className="absolute bottom-10 right-10 text-white font-bold text-5xl">
           {timeNow}
         </span>

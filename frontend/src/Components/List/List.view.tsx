@@ -7,10 +7,10 @@ export const List = () => {
 
   return (
     <>
-      {data.allGuests ? (
+      {data.guests ? (
         <DataTable
           columns={data.columns}
-          data={data.allGuests}
+          data={data.guests}
           customStyles={data.customStyles}
           pagination
           fixedHeaderScrollHeight="22"

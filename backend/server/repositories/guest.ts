@@ -6,9 +6,11 @@ export const list = async (
   perPage: number,
   skip: number,
   search: string,
-  event: string
+  event: string,
+  status: string
 ) => {
-  console.log(event);
+  console.log("rep: ", status);
+  console.log("rep: ", status === "true" ? true : false);
   const guests = await db.findMany({
     skip: perPage * skip,
     take: perPage,
@@ -25,6 +27,9 @@ export const list = async (
         },
         {
           role: { contains: search },
+        },
+        {
+          check: { equals: status === "true" ? true : false },
         },
       ],
       AND: [

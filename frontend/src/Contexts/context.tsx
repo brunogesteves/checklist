@@ -14,6 +14,7 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
   const [skip, setSkip] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [searchByEvent, setSearchByEvent] = useState<string>("");
+  const [searchByStatus, setSearchByStatus] = useState<string>("");
   const [totalGuests, setTotalGuests] = useState<number>(0);
   const [hasArrivedGuestNumber, setHasArrivedGuestNumber] = useState<number>(0);
   const dateFormat = new Intl.DateTimeFormat("pt-BR", {
@@ -26,10 +27,18 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
     hour12: false,
   });
 
-  function guestChecked(id: number) {
-    console.log("guest check");
-    console.log(guests[4].check);
+  async function getGuests() {
+    await api
+      .get("/guests", {
+        params: { perPage, skip, search, searchByEvent, searchByStatus },
+      })
+      .then((res) => {
+        setGuests(res?.data?.guests);
+        setTotalGuests(res.data.totalGuests);
+      });
+  }
 
+  function guestChecked(id: number) {
     const time = timeNow;
     let tempGuests = guests;
 
@@ -42,10 +51,19 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
         });
       }
     });
-    console.log(tempGuests[4].check);
     setGuests(tempGuests);
-    console.log(guests[4].check);
   }
+
+  useEffect(() => {
+    let tempArrived = 0;
+    console.log(guests.length);
+    guests.forEach((guest) => {
+      if (guest.check === true) {
+        tempArrived += 1;
+      }
+    });
+    setHasArrivedGuestNumber(tempArrived);
+  }, [guests]);
 
   useEffect(() => {
     if (skip === 0) setSkip(0);
@@ -56,25 +74,9 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
 
     api.get("/events").then((res) => setAllEvents(res.data.getEvents));
 
-    api
-      .get("/guests", { params: { perPage, skip, search, searchByEvent } })
-      .then((res) => {
-        setGuests(res?.data?.guests);
-        setTotalGuests(res.data.totalGuests);
-      });
-  }, [perPage, skip, search, searchByEvent]);
+    getGuests();
+  }, [perPage, skip, search, searchByEvent, searchByStatus]);
 
-  useEffect(() => {
-    console.log("guest reload");
-    // console.log(guests);
-    let tempArrived = 0;
-    guests.forEach((guest) => {
-      if (guest.check === true) {
-        tempArrived += 1;
-      }
-    });
-    setHasArrivedGuestNumber(tempArrived);
-  }, [guests]);
   return (
     <InfoContext.Provider
       value={{
@@ -96,6 +98,8 @@ export const InfoProvider: React.FC<{ children: React.ReactNode }> = ({
         guestChecked,
         hasArrivedGuestNumber,
         setHasArrivedGuestNumber,
+        searchByStatus,
+        setSearchByStatus,
       }}
     >
       {children}

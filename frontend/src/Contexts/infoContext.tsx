@@ -1,10 +1,6 @@
 import { createContext } from "react";
 
-import {
-  ItemCompanyProps,
-  ListGuestProps,
-  ListEventsProps,
-} from "../../@types";
+import { ListGuestProps, ListEventsProps } from "../../@types";
 
 interface InfoProps {
   timeNow: string;
@@ -25,6 +21,8 @@ interface InfoProps {
   guestChecked: (id: number) => void;
   hasArrivedGuestNumber: number;
   setHasArrivedGuestNumber: (id: number) => void;
+  searchByStatus: string;
+  setSearchByStatus: (c: string) => void;
 }
 
 export const InfoContext = createContext<InfoProps>({
@@ -46,4 +44,6 @@ export const InfoContext = createContext<InfoProps>({
   guestChecked: () => {},
   hasArrivedGuestNumber: 0,
   setHasArrivedGuestNumber: () => {},
+  searchByStatus: "",
+  setSearchByStatus: () => {},
 });
